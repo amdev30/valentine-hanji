@@ -11,7 +11,6 @@ body{
  font-family:Arial,sans-serif;
  background:#ffe6f0;
  overflow:hidden;
- transition:0.5s;
 }
 
 .screen{
@@ -101,12 +100,6 @@ button{
  border-radius:10px;
  box-shadow:0 0 15px pink;
  cursor:pointer;
- animation:shake 1s infinite;
-}
-
-@keyframes shake{
-0%,100%{transform:rotate(0);}
-50%{transform:rotate(2deg);}
 }
 
 .magicHeart{
@@ -174,7 +167,6 @@ button{
 <button id="yes" onclick="openLetter()" style="display:none;">Hanjii 😍</button>
 <button id="no" onmouseover="moveButton()" style="display:none;">Nahi 😅</button>
 
-<!-- NEW QUESTION -->
 <div id="speakQuestion" style="display:none;">
 <p><b>Should I speak baby..? 🥺</b></p>
 <button onclick="continueChat()">Yes, tell me❤️</button>
@@ -189,6 +181,18 @@ button{
 <div class="overlay" id="overlay">
 <div class="bigLove">MY LOVE❤️</div>
 <h2>You are my forever Valentine Baccha💍😘</h2>
+
+<!-- SPOTIFY PLAYER -->
+<div id="spotifyPlayer" style="display:none;">
+<iframe style="border-radius:12px"
+src="https://open.spotify.com/embed/track/1dGr1c8CrMLDpV6mPbImSI"
+width="300"
+height="80"
+frameBorder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+</div>
+
 <button class="loveButton" onclick="finalLove()">I Love You Too❤️</button>
 </div>
 
@@ -196,11 +200,6 @@ button{
 <h3>A Letter For You My Love💌</h3>
 <p id="handwritingText" class="handwriting"></p>
 </div>
-
-<!-- Lover Music -->
-<iframe id="musicPlayer" width="0" height="0"
-src="https://www.youtube.com/embed/-BjZmE2gtdo?enablejsapi=1&mute=1"
-allow="autoplay"></iframe>
 
 <audio id="heartbeatSound">
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c3d6f5c96.mp3">
@@ -239,11 +238,9 @@ function startChat(){
   div.className="msg";
   div.innerText=messages[index];
 
-  // heartbeat for last message
   if(index === messages.length-1){
-    let hb=heartbeatSound;
-    hb.currentTime=0;
-    hb.play().catch(()=>{});
+    heartbeatSound.currentTime=0;
+    heartbeatSound.play().catch(()=>{});
   }
 
   chat.appendChild(div);
@@ -251,7 +248,6 @@ function startChat(){
 
   index++;
 
-  // PAUSE AFTER SECOND MESSAGE
   if(index === 2){
      speakQuestion.style.display="block";
      return;
@@ -301,7 +297,8 @@ function accepted(){
  letterScreen.classList.add("hidden");
  overlay.classList.add("show");
 
- musicPlayer.src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1";
+ // Show Spotify player
+ document.getElementById("spotifyPlayer").style.display="block";
 }
 
 const letterMessage=`Saee ❤️,
@@ -317,9 +314,8 @@ Thank you for being my Valentine… and hopefully my forever. ❤️`;
 let letterIndex=0;
 
 function typeLetter(){
- let element=handwritingText;
  if(letterIndex < letterMessage.length){
-   element.innerHTML += letterMessage.charAt(letterIndex);
+   handwritingText.innerHTML += letterMessage.charAt(letterIndex);
    letterIndex++;
    setTimeout(typeLetter,40);
  }
