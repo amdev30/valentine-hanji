@@ -5,79 +5,341 @@
 <title>Important Question ❤️</title>
 
 <style>
+
 body{
-    text-align:center;
-    font-family: Arial;
-    background-color:#ffe6f0;
-    margin-top:100px;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#ffe6f0;
+ overflow:hidden;
+ transition:0.5s;
 }
 
-h1{
-    color:#ff3366;
+.screen{
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
 }
 
-.shayari{
-    font-size:20px;
-    color:#cc0066;
-    margin:20px;
-    font-style:italic;
+.hidden{display:none;}
+
+.loading{
+ font-size:22px;
+ color:#ff0066;
+ animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{opacity:0.3;}
+50%{opacity:1;}
+100%{opacity:0.3;}
+}
+
+.chat{
+ background:white;
+ border-radius:20px;
+ padding:20px;
+ width:80%;
+ max-width:400px;
+ box-shadow:0 0 20px pink;
+ overflow-y:auto;
+ max-height:60vh;
+}
+
+.msg{
+ background:#ffc0cb;
+ margin:10px;
+ padding:10px;
+ border-radius:10px;
+ text-align:left;
+}
+
+.typing{
+ font-style:italic;
+ color:#888;
 }
 
 button{
-    padding:15px 25px;
-    font-size:18px;
-    margin:10px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
+ padding:12px 20px;
+ border:none;
+ border-radius:25px;
+ margin:10px;
+ font-size:18px;
+ cursor:pointer;
 }
 
-#yes{
-    background-color:#ff3366;
-    color:white;
+#yes{ background:#ff3366;color:white; }
+#no{ background:grey;color:white; }
+
+.overlay{
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ height:100%;
+ background:rgba(255,192,203,0.95);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ opacity:0;
+ pointer-events:none;
+ transition:1s;
 }
 
-#no{
-    background-color:grey;
-    color:white;
+.overlay.show{
+ opacity:1;
+ pointer-events:auto;
 }
+
+.bigLove{ font-size:70px; }
+
+.envelope{
+ background:white;
+ padding:20px;
+ border-radius:10px;
+ box-shadow:0 0 15px pink;
+ cursor:pointer;
+ animation:shake 1s infinite;
+}
+
+@keyframes shake{
+0%,100%{transform:rotate(0);}
+50%{transform:rotate(2deg);}
+}
+
+.magicHeart{
+ position:absolute;
+ font-size:18px;
+ opacity:0.6;
+ animation:magicFloat 6s linear infinite;
+}
+
+@keyframes magicFloat{
+0%{transform:translateY(0);opacity:0;}
+50%{opacity:0.7;}
+100%{transform:translateY(-600px);opacity:0;}
+}
+
+.letterEnding{
+ position:fixed;
+ top:50%;
+ left:50%;
+ transform:translate(-50%,-50%);
+ background:#fff0f5;
+ padding:30px;
+ border-radius:15px;
+ box-shadow:0 0 40px #ff99cc;
+ max-width:400px;
+ text-align:left;
+ font-family:cursive;
+ display:none;
+}
+
+.handwriting{
+ white-space:pre-line;
+ border-right:2px solid pink;
+ animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{border-color:pink;}
+50%{border-color:transparent;}
+100%{border-color:pink;}
+}
+
+.loveButton{
+ animation:romanticPulse 1.5s infinite;
+}
+
+@keyframes romanticPulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.1);}
+100%{transform:scale(1);}
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>Will you be my Valentine Saee🥺❤️🌹?</h1>
+<div class="screen" id="loadingScreen">
+<div class="loading">Processing love request ❤️...</div>
+</div>
 
-<p class="shayari">
-Ek tumhe pake aur pana kya hai🫠🫠,<br>
-Ek tumhe pake aur pana kya hai..?,<br>
-Mai duniya chhod du..,<br>
-Yeh zamana kya hai🥹🤌🏻?<br>
-Tumhari muskaan meri duniya hai🌎,<br>
-Tumhari baatein meri kahani hai,<br>
-Ek sawal hai dil se aaj…❤️<br>
-Kya tum meri Valentine banogi💍🌹?
-</p>
+<div class="screen hidden" id="chatScreen">
+<div class="chat" id="chatBox"></div>
 
-<button id="yes" onclick="accepted()">Hanji 😍</button>
-<button id="no" onmouseover="moveButton()">No 😅</button>
+<button id="yes" onclick="openLetter()" style="display:none;">Hanjii 😍</button>
+<button id="no" onmouseover="moveButton()" style="display:none;">Nahi 😅</button>
+
+<!-- NEW QUESTION -->
+<div id="speakQuestion" style="display:none;">
+<p><b>Should I speak baby..? 🥺</b></p>
+<button onclick="continueChat()">Yes, tell me❤️</button>
+</div>
+
+</div>
+
+<div class="screen hidden" id="letterScreen">
+<div class="envelope" onclick="accepted()">Tap to open secret letter 💌</div>
+</div>
+
+<div class="overlay" id="overlay">
+<div class="bigLove">MY LOVE❤️</div>
+<h2>You are my forever Valentine Baccha💍😘</h2>
+<button class="loveButton" onclick="finalLove()">I Love You Too❤️</button>
+</div>
+
+<div class="letterEnding" id="letterEnding">
+<h3>A Letter For You My Love💌</h3>
+<p id="handwritingText" class="handwriting"></p>
+</div>
+
+<!-- Lover Music -->
+<iframe id="musicPlayer" width="0" height="0"
+src="https://www.youtube.com/embed/-BjZmE2gtdo?enablejsapi=1&mute=1"
+allow="autoplay"></iframe>
+
+<audio id="heartbeatSound">
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_4c3d6f5c96.mp3">
+</audio>
 
 <script>
 
-function accepted(){
-    document.body.innerHTML =
-    "<h1>Yayyyyy😍❤️</h1>" +
-    "<h1>You are my now valentine my baccha😘💋</h1>";
+setTimeout(()=>{
+ loadingScreen.classList.add("hidden");
+ chatScreen.classList.remove("hidden");
+ startChat();
+},2500);
+
+const messages=[
+"Hi Saee 🙂",
+"Aaj kuch alfaaz sirf tumhare liye lekar aaya hoon...",
+"Ek tumhe pake aur pana kya hai🫠🫠,",
+"Ek tumhe pake aur pana kya hai..?",
+"Mai duniya chhod du..,",
+"Yeh zamana kya hai🥹🤌🏻?",
+"Tumhari muskaan meri duniya hai🌎,",
+"Tumhari baatein meri kahani hai ❤️",
+"Ek sawal hai dil se aaj…",
+"Kya tum meri Valentine banogi💍🌹?"
+];
+
+let index=0;
+
+function startChat(){
+
+ if(index < messages.length){
+
+  let chat=chatBox;
+
+  let div=document.createElement("div");
+  div.className="msg";
+  div.innerText=messages[index];
+
+  // heartbeat for last message
+  if(index === messages.length-1){
+    let hb=heartbeatSound;
+    hb.currentTime=0;
+    hb.play().catch(()=>{});
+  }
+
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+
+  index++;
+
+  // PAUSE AFTER SECOND MESSAGE
+  if(index === 2){
+     speakQuestion.style.display="block";
+     return;
+  }
+
+  let typing=document.createElement("div");
+  typing.className="typing";
+  typing.innerText="Amol is typing...";
+  chat.appendChild(typing);
+
+  setTimeout(()=>{
+
+    typing.remove();
+
+    if(index === messages.length){
+      yes.style.display="inline-block";
+      no.style.display="inline-block";
+    }else{
+      startChat();
+    }
+
+  }, index === messages.length ? 2500 : 1200);
+ }
+}
+
+function continueChat(){
+ speakQuestion.style.display="none";
+ startChat();
 }
 
 function moveButton(){
-    var x = Math.random()*300;
-    var y = Math.random()*300;
+ no.style.position="absolute";
+ no.style.left=Math.random()*(window.innerWidth-100)+"px";
+ no.style.top=Math.random()*(window.innerHeight-50)+"px";
+}
 
-    var btn = document.getElementById("no");
-    btn.style.position = "absolute";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+function openLetter(){
+ chatScreen.classList.add("hidden");
+ letterScreen.classList.remove("hidden");
+}
+
+function accepted(){
+
+ heartbeatSound.pause();
+ heartbeatSound.currentTime=0;
+
+ letterScreen.classList.add("hidden");
+ overlay.classList.add("show");
+
+ musicPlayer.src="https://www.youtube.com/embed/-BjZmE2gtdo?autoplay=1";
+}
+
+const letterMessage=`Saee ❤️,
+
+Maybe I am not perfect… but when I am with you, everything feels perfect.
+
+Your smile makes my world brighter, your presence makes my heart calmer.
+
+Today was just a question… but honestly, I already knew my heart chose you long ago 💍.
+
+Thank you for being my Valentine… and hopefully my forever. ❤️`;
+
+let letterIndex=0;
+
+function typeLetter(){
+ let element=handwritingText;
+ if(letterIndex < letterMessage.length){
+   element.innerHTML += letterMessage.charAt(letterIndex);
+   letterIndex++;
+   setTimeout(typeLetter,40);
+ }
+}
+
+function finalLove(){
+ overlay.classList.remove("show");
+ letterEnding.style.display="block";
+ typeLetter();
+ setInterval(createMagicHeart,500);
+}
+
+function createMagicHeart(){
+ let heart=document.createElement("div");
+ heart.className="magicHeart";
+ heart.innerHTML="❤️";
+ heart.style.left=Math.random()*window.innerWidth+"px";
+ heart.style.top=window.innerHeight+"px";
+ document.body.appendChild(heart);
+ setTimeout(()=>heart.remove(),6000);
 }
 
 </script>
