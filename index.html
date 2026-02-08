@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Important Question ❤️</title>
+
+<style>
+body{
+    text-align:center;
+    font-family: Arial;
+    background-color:#ffe6f0;
+    margin-top:100px;
+}
+
+h1{
+    color:#ff3366;
+}
+
+.shayari{
+    font-size:20px;
+    color:#cc0066;
+    margin:20px;
+    font-style:italic;
+}
+
+button{
+    padding:15px 25px;
+    font-size:18px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+#yes{
+    background-color:#ff3366;
+    color:white;
+}
+
+#no{
+    background-color:grey;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Will you be my Valentine Saee🥺❤️🌹?</h1>
+
+<p class="shayari">
+Ek tumhe pake aur pana kya hai🫠🫠,<br>
+Ek tumhe pake aur pana kya hai..?,<br>
+Mai duniya chhod du..,<br>
+Yeh zamana kya hai🥹🤌🏻?<br>
+Tumhari muskaan meri duniya hai🌎,<br>
+Tumhari baatein meri kahani hai,<br>
+Ek sawal hai dil se aaj…❤️<br>
+Kya tum meri Valentine banogi💍🌹?
+</p>
+
+<button id="yes" onclick="accepted()">Hanji 😍</button>
+<button id="no" onmouseover="moveButton()">No 😅</button>
+
+<script>
+
+function accepted(){
+    document.body.innerHTML =
+    "<h1>Yayyyyy😍❤️</h1>" +
+    "<h1>You are my now valentine my baccha😘💋</h1>";
+}
+
+function moveButton(){
+    var x = Math.random()*300;
+    var y = Math.random()*300;
+
+    var btn = document.getElementById("no");
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+</script>
+
+</body>
+</html>
